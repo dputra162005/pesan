@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dputra</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+    
+      background: #fff;
+      padding: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 400px;
+      border-radius: 20px;
+      animation: fadeIn 0.5s ease;
+      text-align: center;
+    }
+
+    #form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    input {
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: 0.3s;
+      font-size: 16px;
+    }
+
+    input:focus {
+      border-color: #66a6ff;
+      box-shadow: 0 0 8px rgba(102,166,255,0.5);
+    }
+
+    .btn {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.3s;
+    }
+
+    .btn button:nth-child(1) {
+      background: linear-gradient(135deg, #00c853, #4caf50);
+    }
+
+    .btn button:nth-child(2) {
+      background: linear-gradient(135deg, #ff1744, #d50000);
+    }
+
+    .btn button:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+    .modal-content img {
+        
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    h3 {
+        color: #8a7f7f;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="modal">
+    <div class="modal-content">
+        <img src="kucing.gif" alt="Kucing Imut">
+        <h3>kirem sesuatu tentang diri ku!!!!</h3>
+      <form id="form">
+        <input id="input" type="text" placeholder="Masukkan teks...">
+        <span class="error" id="errorMsg">Wajib diisi!</span>
+        <div class="btn">
+          <button id="random" type="button">Kirim Random</button>
+          <button id="kirim" type="submit">Kirim</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    const form = document.getElementById("form");
+    const  errorMsg = document.getElementById("errorMsg");
+    const random = document.getElementById("random");
+    const kirim = document.getElementById("kirim");
+    const input = document.getElementById("input");
+
+    const token = "7155816061:AAEil-H0ZTr_SrnOYVuW5Pu7S0niKouWoMM";
+    const chatId = "7116804440"; // ganti dengan chat_id kamu
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        if (input.value.trim() === "") {
+            errorMsg.style.display = "inline";
+        }else {
+            let pesan = input.value;
+            alert("terkirim")
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+            chat_id: chatId,
+            text: pesan
+            })
+        })
+            .then(res => res.json())
+            .then(data => console.log("Terkirim:", data))
+            .catch(err => console.error("Error:", err));
+            }
+        })
+
+    random.addEventListener("click", () => {
+        input.value = "hidup jokowiiiiii!!!";
+        kirim.removeEventListener('mouseover', moveButton);
+        kirim.removeEventListener('touchstart', moveButton);
+        setTimeout(() => {
+            kirim.click();
+        }, 2000);
+
+
+    })
+
+    input.addEventListener("input",function() {
+        if (input.value.trim() !== "") {
+            kirim.addEventListener("mouseover", moveButton);
+            kirim.addEventListener("touchstart", moveButton);
+        }else {
+            kirim.removeEventListener('mouseover', moveButton);
+            kirim.removeEventListener('touchstart', moveButton);
+        }
+    })
+
+    function moveButton() {
+        const randomX = Math.floor(Math.random() * 150) - 75;
+        const randomY = Math.floor(Math.random() * 190) - 50;
+        kirim.style.transform = `translate(${randomX}px, ${randomY}px)`;
+     }
+
+     
+
+  </script>
+</body>
+</html>
